@@ -29,6 +29,20 @@
     </form>
 
 <?php
+require 'connexion.php';
+if(isset($_GET['genre'])){
+
+    $genre = $_GET['genre'];
+
+$sql = "SELECT titre, note FROM jeu WHERE genre = ?";
+$resultat = $base->prepare($sql);
+$resultat->execute(array($genre));
+echo '<p>'.$resultat->rowCount().' jeu(x) trouvé(s)</p>';
+
+while ($ligne = $resultat->fetch()){
+
+    echo '<p>'.$ligne['titre'].' : '.$ligne['note'].'/20</p>';
+}}
 
 ?>
 </body>

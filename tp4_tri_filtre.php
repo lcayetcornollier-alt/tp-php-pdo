@@ -25,20 +25,38 @@ require 'connexion.php';
 <h2>Classement</h2>
 <ul>
 <?php
+        $resultat = $base->query("SELECT titre, genre, annee, note FROM jeu  ORDER BY note DESC");
+        // Préparation de la requête avec les marqueurs
+        
+        while ($ligne = $resultat->fetch()){
 
+        echo '<li>'.$ligne['titre'].' '.$ligne['genre'].' '.$ligne['annee'].' '.$ligne['note'].'/20</li>';
+        }
 ?>
 </ul>
 
 <h2>Jeux récents</h2>
 <ul>
 <?php
+        $resultat = $base->query("SELECT titre, genre, annee, note FROM jeu WHERE annee > 2015 ORDER BY annee ASC");
+        // Préparation de la requête avec les marqueurs
+     
+        while ($ligne = $resultat->fetch()){
 
+        echo '<li>'.$ligne['titre'].' '.$ligne['genre'].' '.$ligne['annee'].' '.$ligne['note'].'/20</li>';
+        }
 ?>
 </ul>
 
 <h2>Jeux de sport</h2>
 <?php
-
+        $resultat = $base->query("SELECT titre, genre, annee, note FROM jeu WHERE genre like 'Sport%'");
+        // Préparation de la requête avec les marqueurs
+        
+         echo $resultat->rowCount()." jeu(x) de sport";
+        while ($ligne = $resultat->fetch()){
+        echo '<li>'.$ligne['titre'].' '.$ligne['genre'].' '.$ligne['annee'].' '.$ligne['note'].'/20</li>';
+        }
 ?>
 
 </body>

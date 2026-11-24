@@ -13,7 +13,14 @@
   Les titres et genres affichés doivent être protégés.
   Test : ajouter un jeu dont le titre est <b>Test</b>. Que voit-on ?
 */
-
+require 'connexion.php';
+$resultat = $base->query("SELECT titre, genre, annee, note FROM jeu ORDER BY id DESC");
+$nombre = $resultat->rowCount();
+if(isset($_GET['supprimer'])){
+            $sql = "DELETE FROM jeu WHERE id = ?";
+            $resultat = $base->prepare($sql);
+            $resultat->execute(array($_GET['supprimer']));
+        }
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -22,12 +29,27 @@
     <title>Ma ludothèque</title>
 </head>
 <body>
-    <h1>Ma ludothèque</h1>
+    <h1>Ma ludothèque <?php echo 'nombre: '.$nombre;   ?></h1>
 
     <table border="1">
         <tr><th>Titre</th><th>Genre</th><th>Année</th><th>Note</th><th></th></tr>
         <?php
 
+        
+       
+        if(isset($_POST['titre']) && isset($_POST['genre']) && isset($_POST['annee']) && isset($_POST['note'])  ){
+            $req = $base->prepare('INSERT INTO jeu (titre, genre, annee, note) VALUES (:titre, :genre, :annee, :note)');
+            $req->execute( array("titre"=> $_POST['titre'], "genre" => $_POST['genre'], "annee" => $_POST['annee'], "note" => $_POST['note']));
+            // $req = $base->prepare('INSERT INTO jeu (titre, genre, annee, note) VALUES (?, ?, ?, ?)');
+            // $req->execute(array($_POST['titre'], $_POST['genre'], $_POST['annee'], $_POST['note']));
+        }
+         $resultat = $base->query("SELECT titre, genre, annee, note , id FROM jeu ORDER BY id DESC");
+        // Préparation de la requête avec les marqueurs
+        
+        while ($ligne = $resultat->fetch()){
+
+        echo '<tr><th>'.$ligne['titre'].'</th><th>'.$ligne['genre'].'</th><th>'.$ligne['annee'].'</th><th>'.$ligne['note'].'</th><th><a href="?supprimer='.$ligne['id'].'">suprimer</a></th></tr>';
+        }
         ?>
     </table>
 

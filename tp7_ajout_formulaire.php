@@ -27,6 +27,23 @@
     </form>
 
 <?php
+require 'connexion.php';
+
+if(isset($_POST['titre']) && isset($_POST['genre']) && isset($_POST['genre']) && isset($_POST['note'])){
+$titre = $_POST['titre'];
+$genre = $_POST['genre'];
+$annee = $_POST['annee'];
+$note = $_POST['note'];
+
+
+$sql = "INSERT INTO jeu (titre, genre, annee, note) VALUES (?,?,?,?)";
+$resultat = $base->prepare($sql);
+$resultat->execute(array($titre, $genre, $annee, $note));
+$id = $base->lastInsertId();
+echo '<p>Jeu ajouté ! Son id est :'.$id.'</p>';
+echo '<a href="http://localhost/tp-php-pdo/tp3_liste.php">voir</a>';
+}
+
 
 ?>
 </body>

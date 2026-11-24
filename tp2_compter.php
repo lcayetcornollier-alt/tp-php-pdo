@@ -14,6 +14,9 @@
 </head>
 <body>
 <?php
+require 'connexion.php';
+$resultat = $base->query('SELECT * FROM jeu');
+echo "Nombre de personnes:".$resultat->rowCount();
 
 ?>
 </body>

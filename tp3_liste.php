@@ -16,7 +16,15 @@
     <table border="1">
         <tr><th>Titre</th><th>Genre</th><th>Année</th><th>Note</th></tr>
         <?php
+        require 'connexion.php';
+        
+        $resultat = $base->query("SELECT titre, genre, annee, note FROM jeu ORDER BY id ASC");
+        // Préparation de la requête avec les marqueurs
+        
+        while ($ligne = $resultat->fetch()){
 
+        echo '<tr><th>'.$ligne['titre'].'</th><th>'.$ligne['genre'].'</th><th>'.$ligne['annee'].'</th><th>'.$ligne['note'].'</th></tr>';
+        }
         ?>
     </table>
 </body>

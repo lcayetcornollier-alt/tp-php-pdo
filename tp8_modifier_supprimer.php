@@ -36,7 +36,48 @@
 
     <h2>Liste des jeux</h2>
 <?php
+require 'connexion.php';
+if(isset($_POST['note']) && isset($_POST['id_modif'])){
+    $id = $_POST['id_modif'];
+    $newnote = $_POST['note'];
 
+    $sql = "UPDATE jeu SET note = ? WHERE id = ?";
+    $resultat = $base->prepare($sql);
+    $resultat->execute(array($newnote, $id));
+ 
+    if($resultat->rowCount() == 0){
+
+        echo "<p> Aucun jeu modifié</p>";
+    }else{
+
+ 
+
+   $resultat = $base->query("SELECT titre FROM jeu WHERE id =".$id);
+        // Préparation de la requête avec les marqueurs
+     
+        while ($ligne = $resultat->fetch()){
+                  echo "<p> Note modifiée ".$ligne['titre'].": ".$newnote."</p>";  
+        }
+
+    }
+    
+}
+
+if(isset($_POST['id_suppr'])){
+    $id = $_POST['id_suppr'];
+
+    $sql = "DELETE FROM jeu WHERE id = ?";
+    $resultat = $base->prepare($sql);
+    $resultat->execute(array($id));
+    
+    if($resultat->rowCount() == 0){
+
+        echo "<p> aucun jeu supprimé.</p>";
+    }else{
+
+        echo "<p> Jeu supprimé.</p>";
+    }
+}
 ?>
 </body>
 </html>
